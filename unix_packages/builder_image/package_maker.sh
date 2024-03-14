@@ -9,6 +9,8 @@ mkdir -p ${WORKDIR}
 RAWPYVER=$(/usr/local/bin/python?.? --version | awk '{print $2}')
 PYVER=$(echo $RAWPYVER | awk -F\. '{print $1"."$2}')
 MINOR=$(echo $RAWPYVER | awk -F\. '{print $3}')
+SYSTEM=$(uname | tr 'A-Z' 'a-z')
+MACHINE=$(uname -m)
 
 for file in ${C_POST_INSTALL} ${C_PRE_REMOVE} ${C_POST_REMOVE}; do
   echo '#!/bin/bash' > ${file}
@@ -78,7 +80,7 @@ cd ${GIT_PATH}
 pip install -r requirements.txt
 python setup.py build_exe
 
-mv build/exe.linux-x86_64-${PYVER} /opt/elasticsearch-curator
+mv build/exe.${SYSTEM}-${MACHINE}-${PYVER} /opt/elasticsearch-curator
 chown -R root:root /opt/elasticsearch-curator
 cd $WORKDIR
 
